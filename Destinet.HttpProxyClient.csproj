@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <StartupObject></StartupObject>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <PackageId>Destinet.HttpProxyClient</PackageId>
+    <Authors>Daniel Storjordet</Authors>
+    <Company>Destino AS</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <AssemblyName>Destinet.HttpProxyClient</AssemblyName>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
+    <RootNamespace>Destinet</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="build\**" />
+    <Compile Remove="data\**" />
+    <Compile Remove="Logs\**" />
+    <Compile Remove="token\**" />
+    <Content Remove="build\**" />
+    <Content Remove="data\**" />
+    <Content Remove="Logs\**" />
+    <Content Remove="token\**" />
+    <EmbeddedResource Remove="build\**" />
+    <EmbeddedResource Remove="data\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <EmbeddedResource Remove="token\**" />
+    <None Remove="build\**" />
+    <None Remove="data\**" />
+    <None Remove="Logs\**" />
+    <None Remove="token\**" />
+    <None Include="LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="libman.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Figgle" Version="0.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
+    <PackageReference Include="NetEscapades.Extensions.Logging.RollingFile" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="*.config">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>
