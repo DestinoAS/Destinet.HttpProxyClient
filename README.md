@@ -1,11 +1,3 @@
-<pre>
-   _____ _____ _____ _____ _____                 _____ _ _         _
-  |  |  |_   _|_   _|  _  |  _  |___ ___ _ _ _ _|     | |_|___ ___| |_
-  |     | | |   | | |   __|   __|  _| . |_'_| | |   --| | | -_|   |  _|
-  |__|__| |_|   |_| |__|  |__|  |_| |___|_,_|_  |_____|_|_|___|_|_|_|
-                                            |___|
-</pre>
-
 # HTTPProxyClient
 
 Client based on the Microsoft Yarp project (https://github.com/microsoft/reverse-proxy). The Yarp project is intended to build a complete proxy server. If you however want to implement the
