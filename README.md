@@ -48,7 +48,7 @@ await _httpProxyClient.ProxyAsync(
 
 There is also an option to adjust the request headers before sending to the upstream server:
 
-``csharp
+```csharp
 await _httpProxyClient.ProxyAsync(
     context,
     upstreamUrl,
