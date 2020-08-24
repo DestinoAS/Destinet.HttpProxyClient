@@ -1,6 +1,6 @@
 # HTTPProxyClient
 
-Client based on the Microsoft Yarp project (https://github.com/microsoft/reverse-proxy). The Yarp project is intended to build a complete proxy server. If you however want to implement the proxy functionality into your own product this project is for you.
+Client based on the Microsoft Yarp project (https://github.com/microsoft/reverse-proxy). The Yarp project is a toolkit for developing high-performance HTTP reverse proxy applications. However in the Yarp project the actual proxying part functionality is internal and are not available as a standalone feature. If you, like me, want to implement the proxy functionality into your own product this project is for you.
 
 A NuGet package is available here: https://www.nuget.org/packages/Destinet.HttpProxyClient/
 
