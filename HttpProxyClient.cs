@@ -54,6 +54,7 @@ namespace Destinet
         public Task ProxyAsync(
             HttpContext context,
             string destinationPrefix,
+            string customHost = null,
             Action<HttpRequestMessage> requestAction = null)
         {
             _ = context ?? throw new ArgumentNullException(nameof(context));
@@ -80,11 +81,11 @@ namespace Destinet
 
                 if (isUpgrade)
                 {
-                    return UpgradableProxyAsync(context, upgradeFeature, request, CreateClient(), shortCancellation, longCancellation, requestAction);
+                    return UpgradableProxyAsync(context, upgradeFeature, request, CreateClient(), shortCancellation, longCancellation, customHost, requestAction);
                 }
                 else
                 {
-                    return NormalProxyAsync(context, request, CreateClient(), shortCancellation, longCancellation, requestAction);
+                    return NormalProxyAsync(context, request, CreateClient(), shortCancellation, longCancellation, customHost, requestAction);
                 }
 
             }
@@ -116,6 +117,7 @@ namespace Destinet
             HttpMessageInvoker httpClient,
             CancellationToken shortCancellation,
             CancellationToken longCancellation,
+            string customHost,
             Action<HttpRequestMessage> requestAction = null)
         {
             _ = context ?? throw new ArgumentNullException(nameof(context));
@@ -141,7 +143,7 @@ namespace Destinet
 
             // :::::::::::::::::::::::::::::::::::::::::::::
             // :: Step 3: Copy request headers Downstream --► Proxy --► Upstream
-            CopyHeadersToUpstream(context, upstreamRequest);
+            CopyHeadersToUpstream(context, upstreamRequest, customHost);
 
             if (requestAction != null)
                 requestAction(upstreamRequest);
@@ -245,6 +247,7 @@ namespace Destinet
             HttpMessageInvoker httpClient,
             CancellationToken shortCancellation,
             CancellationToken longCancellation,
+            string customHost,
             Action<HttpRequestMessage> requestAction = null)
         {
             _ = context ?? throw new ArgumentNullException(nameof(context));
@@ -254,7 +257,7 @@ namespace Destinet
 
             // :::::::::::::::::::::::::::::::::::::::::::::
             // :: Step 2: Copy request headers Downstream --► Proxy --► Upstream
-            CopyHeadersToUpstream(context, upstreamRequest);
+            CopyHeadersToUpstream(context, upstreamRequest, customHost);
 
             if (requestAction != null)
                 requestAction(upstreamRequest);
@@ -406,7 +409,7 @@ namespace Destinet
             return contentToUpstream;
         }
 
-        private void CopyHeadersToUpstream(HttpContext context, HttpRequestMessage destination)
+        private void CopyHeadersToUpstream(HttpContext context, HttpRequestMessage destination, string customHost)
         {
             foreach (var header in context.Request.Headers)
             {
@@ -421,8 +424,16 @@ namespace Destinet
                     continue;
 
                 var sValue = value.ToString();
-                if (headerName == "Host" && sValue.Contains(":"))
-                    value = new StringValues(sValue.Split(':')[0]);
+
+                if (headerName == "Host")
+                {
+                    if (!string.IsNullOrEmpty(customHost))
+                    {
+                        value = new StringValues(customHost);
+                    }
+                    else if (sValue.Contains(":"))
+                        value = new StringValues(sValue.Split(':')[0]);
+                }
 
                 AddHeader(destination, headerName, value);
             }
@@ -444,8 +455,8 @@ namespace Destinet
                 else
                 {
                     // DESTINO: Fix for cookies
-                    if (headerName == "Cookie")
-                        value = new StringValues(string.Join(";", value));
+                    //if (headerName == "Cookie")
+                    //    value = new StringValues(string.Join(";", value));
                     string[] headerValues = value;
                     if (!request.Headers.TryAddWithoutValidation(headerName, headerValues))
                     {

@@ -8,6 +8,6 @@ namespace Destinet
 {
     public interface IHttpProxyClient
     {
-        Task ProxyAsync(HttpContext context, string destinationPrefix, Action<HttpRequestMessage> requestAction = null);
+        Task ProxyAsync(HttpContext context, string destinationPrefix, string customHost = null, Action<HttpRequestMessage> requestAction = null);
     }
 }
